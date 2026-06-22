@@ -23,6 +23,15 @@ const ogType = Meta.ogType ? Meta.ogType : "blog";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BDPCHC1M3M"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-BDPCHC1M3M');
+    </script>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" sizes="any" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
