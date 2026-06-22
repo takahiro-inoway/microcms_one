@@ -1,7 +1,8 @@
 ---
-import { getBlogDetail, getCategoryList } from "@libs/microcms.ts";
+import { getBlogDetail, getCategoryList, getBlogList } from "@libs/microcms.ts";
 import Layout from "@layouts/Layout.astro";
 import BlogPost from "@components/BlogPost.astro";
+import BlogList from "@components/BlogList.astro";
 import CategoryList from "@components/CategoryList.astro";
 export const prerender = false;
 
@@ -24,6 +25,24 @@ const blog = await getBlogDetail(id, draftKey ? { draftKey } : {});
 // カテゴリーリストを取得
 const { contents: categories } = await getCategoryList();
 
+// 同じカテゴリの関連記事を取得（現在の記事を除外）
+let relatedBlogs = [];
+if (blog?.category && blog.category.length > 0) {
+  const catId = blog.category[0].id;
+  try {
+    const { contents: allBlogs } = await getBlogList({ limit: 100 });
+    // クライアント側でフィルタリング：同じカテゴリで現在の記事を除外
+    relatedBlogs = allBlogs
+      .filter(
+        (b) =>
+          b.category?.some((c) => c.id === catId) && b.id !== id
+      )
+      .slice(0, 4);
+  } catch (error) {
+    console.error("Failed to fetch related blogs:", error);
+  }
+}
+
 const Meta = {
   title: blog ? blog.title : "ブログ記事が見つかりません",
   image: blog.thumbnail
@@ -42,6 +61,15 @@ const Meta = {
       ) : (
         <p class="text-center text-lg">このブログ記事は存在しません。</p>
       )
+    }
+
+    {
+      relatedBlogs.length > 0 ? (
+        <section class="space-y-4">
+          <h2 class="text-2xl font-semibold">同じカテゴリの記事</h2>
+          <BlogList blogs={relatedBlogs} />
+        </section>
+      ) : null
     }
   </div>
 

@@ -81,6 +81,21 @@ blog.content = html;
   </div>
 
   {
+    /* Display thumbnail image if available */
+  }
+  {
+    blog.thumbnail?.url && (
+      <figure class="mb-8">
+        <img
+          src={`${blog.thumbnail.url}?q=80&w=1200`}
+          alt={blog.title}
+          class="w-full h-64 sm:h-96 object-cover rounded-md"
+        />
+      </figure>
+    )
+  }
+
+  {
     toc.length > 0 && (
       <aside class="mb-8 p-4 border border-gray-200 bg-gray-50 rounded-md shadow-sm">
         <h2 class="text-lg font-semibold text-gray-700 mb-2 mt-0">目次</h2>

@@ -1,7 +1,7 @@
 ---
 import Layout from "@layouts/Layout.astro";
 import { getSettings } from "@libs/microcms.ts";
-export const prerender = true;
+export const prerender = false;
 const settings = await getSettings();
 
 const Meta = {
